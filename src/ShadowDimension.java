@@ -6,13 +6,24 @@ import bagel.*;
  */
 
 public class ShadowDimension extends AbstractGame {
-    private final static int WINDOW_WIDTH = 1024;
-    private final static int WINDOW_HEIGHT = 768;
-    private final static String GAME_TITLE = "SHADOW DIMENSION";
-    private final Image BACKGROUND_IMAGE = new Image("res/background0.png");
-    private final Font font = new Font("res/frostbite.ttf", 75);
+    private static final int WINDOW_WIDTH = 1024;
+    private static final int WINDOW_HEIGHT = 768;
 
-    public ShadowDimension(){
+    private static final String BACKGROUND_PATH = "res/background0.png";
+    private static final String FONT_PATH = "res/frostbite.ttf";
+    private final Image BACKGROUND_IMAGE = new Image(BACKGROUND_PATH);
+    private final Font FONT75 = new Font(FONT_PATH, 75);
+    private final Font FONT40 = new Font(FONT_PATH, 40);
+
+    private static final double GAME_TITLE_X = 260;
+    private static final double GAME_TITLE_Y = 250;
+    private static final String GAME_TITLE = "SHADOW DIMENSION";
+    private static final String GAME_INSTRUCTION = "PRESS SPACE TO START\nUSE ARROW KEYS TO FIND GATE";
+    private final Message gameTitle = new Message(FONT75, GAME_TITLE, new Point(GAME_TITLE_X, GAME_TITLE_Y));
+    private final Message gameInstruction = new Message(FONT40, GAME_INSTRUCTION, new Point(GAME_TITLE_X + 90, GAME_TITLE_Y + 190));
+
+
+    public ShadowDimension() {
         super(WINDOW_WIDTH, WINDOW_HEIGHT, GAME_TITLE);
     }
 
@@ -38,12 +49,20 @@ public class ShadowDimension extends AbstractGame {
      */
     @Override
     protected void update(Input input) {
-        BACKGROUND_IMAGE.draw(Window.getWidth()/2.0, Window.getHeight()/2.0);
 
-        if (input.wasPressed(Keys.ESCAPE)){
+        if (input.wasPressed(Keys.ESCAPE)) {
             Window.close();
         }
 
-        font.drawString("Hello world!", Window.getWidth()/2.0 - font.getWidth("Hello world!")/2.0, Window.getHeight()/2.0);
+        if (input.wasPressed(Keys.SPACE)) {
+            // readCSV();
+            BACKGROUND_IMAGE.draw(Window.getWidth()/2.0, Window.getHeight()/2.0);
+
+        }
+
+        
+        gameTitle.draw();
+        gameInstruction.draw();
+
     }
 }
