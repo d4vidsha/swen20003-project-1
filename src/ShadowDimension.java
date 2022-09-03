@@ -14,6 +14,7 @@ public class ShadowDimension extends AbstractGame {
     private static final int WINDOW_WIDTH = 1024;
     private static final int WINDOW_HEIGHT = 768;
     private static final int MAX_OBJECTS = 60;
+    private static final String CSV_DELIM = ",";
 
     // fonts
     private static final String FONT_PATH = "res/frostbite.ttf";
@@ -70,8 +71,6 @@ public class ShadowDimension extends AbstractGame {
         GameObject.boundary = boundary;
         GameObject[] objects = new GameObject[MAX_OBJECTS];
         
-        String delimiter = ",";
-
         try {
             File file = new File(csv);
             FileReader fr = new FileReader(file);
@@ -79,11 +78,15 @@ public class ShadowDimension extends AbstractGame {
             String line;
             String[] values;
             int i = 0;
+
+            // read the csv file line by line
             while ((line = br.readLine()) != null) {
-                values = line.split(delimiter);
+                values = line.split(CSV_DELIM);
                 double x = Double.parseDouble(values[1]);
                 double y = Double.parseDouble(values[2]);
                 Point pos = new Point(x, y);
+
+                // create the object based on the type
                 if (contains(OBJECT_NAMES, values[0])) {
                     if (values[0].equals("Player")) {
                         Player player = new Player("res/faeLeft.png", "res/faeRight.png", pos);
@@ -107,7 +110,6 @@ public class ShadowDimension extends AbstractGame {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return objects;
     }
 
@@ -119,8 +121,6 @@ public class ShadowDimension extends AbstractGame {
     private Boundary readBoundary(String csv) {
         Boundary boundary = null;
         
-        String delimiter = ",";
-
         try {
             File file = new File(csv);
             FileReader fr = new FileReader(file);
@@ -129,8 +129,10 @@ public class ShadowDimension extends AbstractGame {
             String[] values;
             Point topLeft = null;
             Point bottomRight = null;
+
+            // read the csv file line by line
             while ((line = br.readLine()) != null) {
-                values = line.split(delimiter);
+                values = line.split(CSV_DELIM);
                 double x = Double.parseDouble(values[1]);
                 double y = Double.parseDouble(values[2]);
                 if (values[0].equals("TopLeft")) {
@@ -140,6 +142,7 @@ public class ShadowDimension extends AbstractGame {
                 }
             }
             
+            // create the boundary
             if (topLeft != null && bottomRight != null) {
                 boundary = new Boundary(topLeft, bottomRight);
             } else {
