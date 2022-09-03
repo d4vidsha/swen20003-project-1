@@ -14,7 +14,7 @@ public class ShadowDimension extends AbstractGame {
     private static final int WINDOW_WIDTH = 1024;
     private static final int WINDOW_HEIGHT = 768;
     private static final int MAX_OBJECTS = 60;
-    private static final String CSV_DELIM = ",";
+    private static final String CSV_DELIMITER = ",";
 
     // fonts
     private static final String FONT_PATH = "res/frostbite.ttf";
@@ -81,7 +81,7 @@ public class ShadowDimension extends AbstractGame {
 
             // read the csv file line by line
             while ((line = br.readLine()) != null) {
-                values = line.split(CSV_DELIM);
+                values = line.split(CSV_DELIMITER);
                 double x = Double.parseDouble(values[1]);
                 double y = Double.parseDouble(values[2]);
                 Point pos = new Point(x, y);
@@ -136,7 +136,7 @@ public class ShadowDimension extends AbstractGame {
 
             // read the csv file line by line
             while ((line = br.readLine()) != null) {
-                values = line.split(CSV_DELIM);
+                values = line.split(CSV_DELIMITER);
                 double x = Double.parseDouble(values[1]);
                 double y = Double.parseDouble(values[2]);
                 if (values[0].equals("TopLeft")) {
