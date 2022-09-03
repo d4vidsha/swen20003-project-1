@@ -88,15 +88,19 @@ public class ShadowDimension extends AbstractGame {
 
                 // create the object based on the type
                 if (contains(OBJECT_NAMES, values[0])) {
-                    if (values[0].equals("Player")) {
-                        Player player = new Player("res/faeLeft.png", "res/faeRight.png", pos);
-                        objects[i] = player;
-                    } else if (values[0].equals("Wall")) {
-                        Wall wall = new Wall("res/wall.png", pos);
-                        objects[i] = wall;
-                    } else if (values[0].equals("Sinkhole")) {
-                        Sinkhole sinkhole = new Sinkhole("res/sinkhole.png", pos);
-                        objects[i] = sinkhole;
+                    switch (values[0]) {
+                        case "Player":
+                            Player player = new Player("res/faeLeft.png", "res/faeRight.png", pos);
+                            objects[i] = player;
+                            break;
+                        case "Wall":
+                            Wall wall = new Wall("res/wall.png", pos);
+                            objects[i] = wall;
+                            break;
+                        case "Sinkhole":
+                            Sinkhole sinkhole = new Sinkhole("res/sinkhole.png", pos);
+                            objects[i] = sinkhole;
+                            break;
                     }
                     i++;
                 }
