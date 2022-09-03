@@ -356,6 +356,7 @@ public class ShadowDimension extends AbstractGame {
             int damagePoints = sinkhole.getDamagePoints();
             player.inflictDamage(damagePoints);
             // remove sinkhole from game
+            sinkholes = removeGameObject(sinkholes, sinkhole);
             stationaryObjects = removeGameObject(stationaryObjects, sinkhole);
             System.out.println("Sinkhole inflicted " + damagePoints + " damage points on " + player.getName()
                  + ". " + player.getName() + "'s current health: " + player.getHealth() + "/" + player.getMaxHealth());
