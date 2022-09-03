@@ -13,7 +13,7 @@ public class Message {
      * @param text The contents of the message.
      */
     public Message(Font font, String text) {
-        this.position = new Point(Window.getWidth()/2.0 - font.getWidth(text)/2.0, Window.getHeight()/2.0);
+        this.position = new Point((Window.getWidth() - font.getWidth(text))/2.0, Window.getHeight()/2.0);
         this.text = text;
         this.font = font;
     }
