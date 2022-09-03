@@ -34,13 +34,16 @@ public class ShadowDimension extends AbstractGame {
 
     private static final int START_SCREEN = 0;
     private static final int GAME_SCREEN = 1;
+    private static final int GAME_OVER_SCREEN = 2;
+    private static final int GAME_WIN_SCREEN = 3;
 
     private int stage = START_SCREEN;
 
-    private String[] OBJECT_NAMES = {"Player", "Wall", "Sinkhole"};
+    private static String[] OBJECT_NAMES = {"Player", "Wall", "Sinkhole"};
 
     private Boundary boundary = readBoundary(LEVEL_PATH);
     private GameObject[] objects = readObjects(LEVEL_PATH, boundary);
+    private GameObject[] stationaryObjects = getStationaryGameObjects();
 
     public ShadowDimension() {
         super(WINDOW_WIDTH, WINDOW_HEIGHT, GAME_TITLE);
@@ -52,6 +55,20 @@ public class ShadowDimension extends AbstractGame {
     public static void main(String[] args) {
         ShadowDimension game = new ShadowDimension();
         game.run();
+    }
+
+    /**
+     * 
+     * @param arr
+     * @param targetValue
+     * @return
+     */
+    private static boolean contains(String[] arr, String targetValue) {
+        for(String s: arr){
+            if(s.equals(targetValue))
+                return true;
+        }
+        return false;
     }
 
     /**
@@ -102,6 +119,11 @@ public class ShadowDimension extends AbstractGame {
         return objects;
     }
 
+    /**
+     * 
+     * @param csv
+     * @return
+     */
     private Boundary readBoundary(String csv) {
         Boundary boundary = null;
         
@@ -141,6 +163,12 @@ public class ShadowDimension extends AbstractGame {
         return boundary;
     }
 
+    public GameObject[] getStationaryGameObjects() {
+        // remove the first element of the game objects array
+        GameObject[] stationaryObjects = Arrays.copyOfRange(objects, 1, objects.length);
+        return stationaryObjects;
+    }
+
     /**
      * Performs a state update.
      * Allows the game to exit when the escape key is pressed.
@@ -170,17 +198,25 @@ public class ShadowDimension extends AbstractGame {
                 }
             }
             
+            // assume player is the first object in the array
             Player player = (Player) objects[0];
             player.update(input);
+
+            if (player.isAtGate()) {
+                stage = GAME_WIN_SCREEN;
+            }
+            return;
+        } else if (stage == GAME_OVER_SCREEN) {
+            Message lose = new Message(FONT75, "GAME OVER!");
+            lose.draw();
+        } else if (stage == GAME_WIN_SCREEN) {
+            Message win = new Message(FONT75, "CONGRATULATIONS!");
+            win.draw();
             return;
         }
     }
 
-    private boolean contains(String[] arr, String targetValue) {
-        for(String s: arr){
-            if(s.equals(targetValue))
-                return true;
-        }
-        return false;
+    public GameObject[] getStationaryObjects() {
+        return stationaryObjects;
     }
 }

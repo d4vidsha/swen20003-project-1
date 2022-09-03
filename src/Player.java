@@ -3,10 +3,13 @@ import bagel.util.*;
 
 public class Player extends GameObject {
 
-    private static final int SPEED = 10;
+    private static final int SPEED = 2;
+    private static final double WIN_X = 950;
+    private static final double WIN_Y = 670;
 
     private Image imageLeft;
     private Image imageRight;
+    private int health = 100;
 
     public Player(String imageLeft, String imageRight, Point position) {
         super(imageLeft, position);
@@ -80,4 +83,27 @@ public class Player extends GameObject {
         }
     }
 
+    public boolean isAtGate() {
+        Point pos = getPosition();
+        return pos.x >= WIN_X && pos.y >= WIN_Y;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public boolean collides(GameObject[] stationaryObjects) {
+        for (GameObject object : stationaryObjects) {
+            Rectangle playerRectangle = this.getRectangle();
+            Rectangle objectRectangle = object.getRectangle();
+            if (playerRectangle.intersects(objectRectangle)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
