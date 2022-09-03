@@ -4,20 +4,31 @@ public class Sinkhole extends GameObject {
 
     private int damagePoints;
     
+    /**
+     * Constructor for Sinkhole class.
+     * @param image Image of the sinkhole.
+     * @param position Position of the sinkhole.
+     */
     public Sinkhole(String image, Point position) {
         super(image, position);
         this.damagePoints = 30;
     }
 
+    /**
+     * Constructor for Sinkhole class.
+     * @param image Image of the sinkhole.
+     * @param position Position of the sinkhole.
+     * @param damagePoints Damage points the sinkhole can inflict.
+     */
     public Sinkhole(String image, Point position, int damagePoints) {
         super(image, position);
         this.damagePoints = damagePoints;
     }
 
-    public Sinkhole(String image, Point position, Boundary boundary) {
-        super(image, position, boundary);
-    }
-
+    /**
+     * Get the damage points of the sinkhole.
+     * @return Damage points of the sinkhole as an integer.
+     */
     public int getDamagePoints() {
         return damagePoints;
     }
