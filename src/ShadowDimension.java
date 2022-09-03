@@ -182,44 +182,52 @@ public class ShadowDimension extends AbstractGame {
         // assume player is the first object in the array
         Player player = (Player) objects[0];
 
-
+        // exit game when escape key is pressed
         if (input.wasPressed(Keys.ESCAPE)) {
             Window.close();
         }
 
+        // start game when space key is pressed
         if (input.wasPressed(Keys.SPACE) && stage == START_SCREEN) {
             stage = GAME_SCREEN;
         }
 
+        // the stages of the game
         if (stage == START_SCREEN) {
-            gameTitle.draw();
-            gameInstruction.draw();
-            return;
+            startStage();
         } else if (stage == GAME_SCREEN) {
-            BACKGROUND_IMAGE.draw(Window.getWidth()/2.0, Window.getHeight()/2.0);
-
-            drawHealthBar(player);
-        
-            for (GameObject object : objects) {
-                if (object != null) {
-                    object.draw();
-                }
-            }
-            
-            player.update(input, stationaryObjects);
-
-            if (player.isAtGate()) {
-                stage = GAME_WIN_SCREEN;
-            }
-            return;
+            gameStage(input, player);
         } else if (stage == GAME_OVER_SCREEN) {
-            Message lose = new Message(FONT75, "GAME OVER!");
-            lose.draw();
+            gameOverStage();
         } else if (stage == GAME_WIN_SCREEN) {
-            Message win = new Message(FONT75, "CONGRATULATIONS!");
-            win.draw();
-            return;
+            gameWinStage();
         }
+    }
+
+    private void startStage() {
+        gameTitle.draw();
+        gameInstruction.draw();
+    }
+
+    private void gameStage(Input input, Player player) {
+        drawBackground();
+        drawHealthBar(player);
+        drawObjects(objects);
+        player.update(input, stationaryObjects);
+
+        if (player.isAtGate()) {
+            stage = GAME_WIN_SCREEN;
+        }
+    }
+
+    private void gameOverStage() {
+        Message lose = new Message(FONT75, "GAME OVER!");
+        lose.draw();
+    }
+
+    private void gameWinStage() {
+        Message win = new Message(FONT75, "CONGRATULATIONS!");
+        win.draw();
     }
 
     public GameObject[] getStationaryObjects() {
@@ -243,5 +251,15 @@ public class ShadowDimension extends AbstractGame {
             System.exit(1);
         }
         healthBar.draw(drawOptions);
+    }
+
+    private void drawObjects(GameObject[] objects) {
+        for (GameObject object : objects) {
+            object.draw();
+        }
+    }
+
+    private void drawBackground() {
+        BACKGROUND_IMAGE.draw(Window.getWidth()/2.0, Window.getHeight()/2.0);
     }
 }
