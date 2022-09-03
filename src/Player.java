@@ -13,12 +13,14 @@ public class Player extends GameObject {
     private Image imageRight;
     private int health = MAX_HEALTH;
     private Point prevPos;
+    private String name;
 
     public Player(String imageLeft, String imageRight, Point position) {
         super(imageLeft, position);
         this.imageLeft = new Image(imageLeft);
         this.imageRight = new Image(imageRight);
         this.prevPos = position;
+        this.name = "Fae";
     }
 
     public Player(String imageLeft, String imageRight, Point position, Boundary boundary) {
@@ -26,6 +28,7 @@ public class Player extends GameObject {
         this.imageLeft = new Image(imageLeft);
         this.imageRight = new Image(imageRight);
         this.prevPos = position;
+        this.name = "Fae";
     }
 
     public void move(Point position) {
@@ -40,7 +43,7 @@ public class Player extends GameObject {
         setPosition(position);
     }
 
-    public void update(Input input, GameObject[] stationaryObjects) {
+    public void update(Input input) {
         if (input.isDown(Keys.LEFT)) {
             this.moveLeft();
         } else if (input.isDown(Keys.RIGHT)) {
@@ -113,5 +116,17 @@ public class Player extends GameObject {
 
     public Point getPrevPos() {
         return prevPos;
+    }
+
+    public int getMaxHealth() {
+        return MAX_HEALTH;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

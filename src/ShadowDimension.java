@@ -13,7 +13,6 @@ public class ShadowDimension extends AbstractGame {
     private static final int WINDOW_HEIGHT = 768;
     private static final int MAX_OBJECTS = 60;
 
-    private static final String LEVEL_PATH = "res/level0.csv";
     private static final String BACKGROUND_PATH = "res/background0.png";
     private static final String FONT_PATH = "res/frostbite.ttf";
     private static final String PLAYER_LEFT_PATH = "res/faeLeft.png";
@@ -45,8 +44,8 @@ public class ShadowDimension extends AbstractGame {
 
     private static String[] OBJECT_NAMES = {"Player", "Wall", "Sinkhole"};
 
-    private Boundary boundary = readBoundary(LEVEL_PATH);
-    private GameObject[] objects = readObjects(LEVEL_PATH, boundary);
+    private Boundary boundary = readBoundary("res/level0.csv");
+    private GameObject[] objects = readObjects("res/level0.csv", boundary);
     private GameObject[] stationaryObjects = getStationaryGameObjects();
 
     public ShadowDimension() {
@@ -183,7 +182,7 @@ public class ShadowDimension extends AbstractGame {
         drawHealthBar(player);
         player.draw();
         drawObjects(stationaryObjects);
-        player.update(input, stationaryObjects);
+        player.update(input);
 
         if (player.isAtGate()) {
             stage = GAME_WIN_SCREEN;
@@ -293,6 +292,8 @@ public class ShadowDimension extends AbstractGame {
             player.inflictDamage(damagePoints);
             // remove sinkhole from game
             stationaryObjects = removeGameObject(stationaryObjects, sinkhole);
+            System.out.println("Sinkhole inflicted " + damagePoints + " damage points on " + player.getName()
+                 + ". " + player.getName() + "'s current health: " + player.getHealth() + "/" + player.getMaxHealth());
         } else if (player.collides(walls)) {
             // bounce player off wall
             Wall wall = (Wall) player.getCollidedObject(walls);
