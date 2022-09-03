@@ -3,7 +3,7 @@ import bagel.util.*;
 
 public class Player extends GameObject {
 
-    private static final int MAX_HEALTH = 20;
+    private static final int MAX_HEALTH = 100;
 
     private static final int SPEED = 2;
     private static final double WIN_X = 950;
@@ -12,73 +12,75 @@ public class Player extends GameObject {
     private Image imageLeft;
     private Image imageRight;
     private int health = MAX_HEALTH;
+    private Point prevPos;
 
     public Player(String imageLeft, String imageRight, Point position) {
         super(imageLeft, position);
         this.imageLeft = new Image(imageLeft);
         this.imageRight = new Image(imageRight);
+        this.prevPos = position;
     }
 
     public Player(String imageLeft, String imageRight, Point position, Boundary boundary) {
         super(imageRight, position, boundary);
         this.imageLeft = new Image(imageLeft);
         this.imageRight = new Image(imageRight);
+        this.prevPos = position;
     }
 
-    public void move(Point position, GameObject[] stationaryObjects) {
-        Point oldPos = getPosition();
-        if (position.x > oldPos.x) {
+    public void move(Point position) {
+        prevPos = getPosition();
+
+        if (position.x > prevPos.x) {
             setImage(imageRight);
-        } else if (position.x < oldPos.x) {
+        } else if (position.x < prevPos.x) {
             setImage(imageLeft);
         }
+
         setPosition(position);
-        if (this.collides(stationaryObjects)) {
-            setPosition(oldPos);
-        }
     }
 
     public void update(Input input, GameObject[] stationaryObjects) {
         if (input.isDown(Keys.LEFT)) {
-            this.moveLeft(stationaryObjects);
+            this.moveLeft();
         } else if (input.isDown(Keys.RIGHT)) {
-            this.moveRight(stationaryObjects);
+            this.moveRight();
         } else if (input.isDown(Keys.UP)) {
-            this.moveUp(stationaryObjects);
+            this.moveUp();
         } else if (input.isDown(Keys.DOWN)) {
-            this.moveDown(stationaryObjects);
+            this.moveDown();
         }
     }
 
-    public void moveLeft(GameObject[] stationaryObjects) {
+    public void moveLeft() {
         Point oldPos = getPosition();
         Point newPos = new Point(oldPos.x - SPEED, oldPos.y);
         if (boundary.contains(newPos)) {
-            this.move(newPos, stationaryObjects);
+            this.move(newPos);
         }
     }
 
-    public void moveRight(GameObject[] stationaryObjects) {
+    public void moveRight() {
         Point oldPos = getPosition();
         Point newPos = new Point(oldPos.x + SPEED, oldPos.y);
         if (boundary.contains(newPos)) {
-            this.move(newPos, stationaryObjects);
+            this.move(newPos);
         }
     }
 
-    public void moveUp(GameObject[] stationaryObjects) {
+    public void moveUp() {
         Point oldPos = getPosition();
         Point newPos = new Point(oldPos.x, oldPos.y - SPEED);
         if (boundary.contains(newPos)) {
-            this.move(newPos, stationaryObjects);
+            this.move(newPos);
         }
     }
 
-    public void moveDown(GameObject[] stationaryObjects) {
+    public void moveDown() {
         Point oldPos = getPosition();
         Point newPos = new Point(oldPos.x, oldPos.y + SPEED);
         if (boundary.contains(newPos)) {
-            this.move(newPos, stationaryObjects);
+            this.move(newPos);
         }
     }
 
@@ -92,21 +94,24 @@ public class Player extends GameObject {
     }
 
     public void setHealth(int health) {
-        this.health = health;
+        if (health > MAX_HEALTH) {
+            this.health = MAX_HEALTH;
+        } else if (health < 0) {
+            this.health = 0;
+        } else {
+            this.health = health;
+        }
     }
 
     public int getHealthPercentage() {
         return (int) Math.round((double) health / MAX_HEALTH * 100);
     }
 
-    public boolean collides(GameObject[] stationaryObjects) {
-        Rectangle playerRectangle = this.getRectangle();
-        for (GameObject object : stationaryObjects) {
-            Rectangle objectRectangle = object.getRectangle();
-            if (playerRectangle.intersects(objectRectangle)) {
-                return true;
-            }
-        }
-        return false;
+    public void inflictDamage(int damage) {
+        this.setHealth(this.getHealth() - damage);
+    }
+
+    public Point getPrevPos() {
+        return prevPos;
     }
 }

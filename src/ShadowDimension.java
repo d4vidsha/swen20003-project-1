@@ -181,7 +181,8 @@ public class ShadowDimension extends AbstractGame {
     private void gameStage(Input input, Player player) {
         drawBackground();
         drawHealthBar(player);
-        drawObjects(objects);
+        player.draw();
+        drawObjects(stationaryObjects);
         player.update(input, stationaryObjects);
 
         if (player.isAtGate()) {
@@ -232,6 +233,32 @@ public class ShadowDimension extends AbstractGame {
         BACKGROUND_IMAGE.draw(Window.getWidth()/2.0, Window.getHeight()/2.0);
     }
 
+    public GameObject[] getWalls(GameObject[] stationaryObjects) {
+        ArrayList<GameObject> walls = new ArrayList<>();
+        for (GameObject gameObject : stationaryObjects) {
+            if (gameObject instanceof Wall) {
+                walls.add(gameObject);
+            }
+        }
+        return walls.toArray(new GameObject[walls.size()]);
+    }
+
+    public GameObject[] getSinkholes(GameObject[] stationaryObjects) {
+        ArrayList<GameObject> sinkholes = new ArrayList<>();
+        for (GameObject gameObject : stationaryObjects) {
+            if (gameObject instanceof Sinkhole) {
+                sinkholes.add(gameObject);
+            }
+        }
+        return sinkholes.toArray(new GameObject[sinkholes.size()]);
+    }
+
+    public GameObject[] removeGameObject(GameObject[] objects, GameObject gameObject) {
+        ArrayList<GameObject> objectsList = new ArrayList<>(Arrays.asList(objects));
+        objectsList.remove(gameObject);
+        return objectsList.toArray(new GameObject[objectsList.size()]);
+    }
+
     /**
      * Performs a state update.
      * Allows the game to exit when the escape key is pressed.
@@ -249,6 +276,27 @@ public class ShadowDimension extends AbstractGame {
         // start game when space key is pressed
         if (input.wasPressed(Keys.SPACE) && stage == START_SCREEN) {
             stage = GAME_SCREEN;
+        }
+        
+        // check if player is dead
+        if (player.getHealthPercentage() <= 0) {
+            stage = GAME_OVER_SCREEN;
+        }
+
+        // check if player hit a wall or sinkhole
+        GameObject[] sinkholes = getSinkholes(stationaryObjects);
+        GameObject[] walls = getWalls(stationaryObjects);
+        if (player.collides(sinkholes)) {
+            // get specific sinkhole collided with
+            Sinkhole sinkhole = (Sinkhole) player.getCollidedObject(sinkholes);
+            int damagePoints = sinkhole.getDamagePoints();
+            player.inflictDamage(damagePoints);
+            // remove sinkhole from game
+            stationaryObjects = removeGameObject(stationaryObjects, sinkhole);
+        } else if (player.collides(walls)) {
+            // bounce player off wall
+            Wall wall = (Wall) player.getCollidedObject(walls);
+            player = wall.bounce(player);
         }
 
         // the stages of the game

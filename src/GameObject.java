@@ -54,4 +54,22 @@ public abstract class GameObject {
     private Rectangle deriveRectangle(Point position, Image image) {
         return new Rectangle(position, image.getWidth(), image.getHeight());
     }
+
+    public boolean collides(GameObject[] gameObjects) {
+        for (GameObject gameObject : gameObjects) {
+            if (gameObject.getRectangle().intersects(this.getRectangle())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public GameObject getCollidedObject(GameObject[] gameObjects) {
+        for (GameObject gameObject : gameObjects) {
+            if (gameObject.getRectangle().intersects(this.getRectangle())) {
+                return gameObject;
+            }
+        }
+        return null;
+    }
 }
