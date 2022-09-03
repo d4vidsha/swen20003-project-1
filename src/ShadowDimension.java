@@ -173,37 +173,6 @@ public class ShadowDimension extends AbstractGame {
         return stationaryObjects;
     }
 
-    /**
-     * Performs a state update.
-     * Allows the game to exit when the escape key is pressed.
-     */
-    @Override
-    protected void update(Input input) {
-        // assume player is the first object in the array
-        Player player = (Player) objects[0];
-
-        // exit game when escape key is pressed
-        if (input.wasPressed(Keys.ESCAPE)) {
-            Window.close();
-        }
-
-        // start game when space key is pressed
-        if (input.wasPressed(Keys.SPACE) && stage == START_SCREEN) {
-            stage = GAME_SCREEN;
-        }
-
-        // the stages of the game
-        if (stage == START_SCREEN) {
-            startStage();
-        } else if (stage == GAME_SCREEN) {
-            gameStage(input, player);
-        } else if (stage == GAME_OVER_SCREEN) {
-            gameOverStage();
-        } else if (stage == GAME_WIN_SCREEN) {
-            gameWinStage();
-        }
-    }
-
     private void startStage() {
         gameTitle.draw();
         gameInstruction.draw();
@@ -261,5 +230,36 @@ public class ShadowDimension extends AbstractGame {
 
     private void drawBackground() {
         BACKGROUND_IMAGE.draw(Window.getWidth()/2.0, Window.getHeight()/2.0);
+    }
+
+    /**
+     * Performs a state update.
+     * Allows the game to exit when the escape key is pressed.
+     */
+    @Override
+    protected void update(Input input) {
+        // assume player is the first object in the array
+        Player player = (Player) objects[0];
+
+        // exit game when escape key is pressed
+        if (input.wasPressed(Keys.ESCAPE)) {
+            Window.close();
+        }
+
+        // start game when space key is pressed
+        if (input.wasPressed(Keys.SPACE) && stage == START_SCREEN) {
+            stage = GAME_SCREEN;
+        }
+
+        // the stages of the game
+        if (stage == START_SCREEN) {
+            startStage();
+        } else if (stage == GAME_SCREEN) {
+            gameStage(input, player);
+        } else if (stage == GAME_OVER_SCREEN) {
+            gameOverStage();
+        } else if (stage == GAME_WIN_SCREEN) {
+            gameWinStage();
+        }
     }
 }
