@@ -2,7 +2,7 @@ import bagel.util.*;
 
 public class Sinkhole extends GameObject {
 
-    private int damagePoints;
+    private final int damagePoints;
     
     /**
      * Constructor for Sinkhole class.

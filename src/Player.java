@@ -10,8 +10,8 @@ public class Player extends GameObject {
     private static final double WIN_Y = 670;
 
     // instance variables
-    private Image imageLeft;
-    private Image imageRight;
+    private final Image imageLeft;
+    private final Image imageRight;
     private int health;
     private Point prevPos;
     private String name;

@@ -38,15 +38,15 @@ public class ShadowDimension extends AbstractGame {
     private static final Colour RED = new Colour(1, 0, 0);
 
     // game objects
-    private static String[] OBJECT_NAMES = {"Player", "Wall", "Sinkhole"};
+    private static final String[] OBJECT_NAMES = {"Player", "Wall", "Sinkhole"};
 
     // initialising the game
     private int stage = START_SCREEN;
-    private Boundary boundary = readBoundary("res/level0.csv");
-    private GameObject[] objects = readObjects("res/level0.csv", boundary);
+    private final Boundary boundary = readBoundary("res/level0.csv");
+    private final GameObject[] objects = readObjects("res/level0.csv", boundary);
     private GameObject[] stationaryObjects = getStationaryGameObjects();
     private GameObject[] sinkholes = getSinkholes(stationaryObjects);
-    private GameObject[] walls = getWalls(stationaryObjects);
+    private final GameObject[] walls = getWalls(stationaryObjects);
 
     public ShadowDimension() {
         super(WINDOW_WIDTH, WINDOW_HEIGHT, GAME_TITLE);
@@ -76,7 +76,7 @@ public class ShadowDimension extends AbstractGame {
             File file = new File(csv);
             FileReader fr = new FileReader(file);
             BufferedReader br = new BufferedReader(fr);
-            String line = "";
+            String line;
             String[] values;
             int i = 0;
             while ((line = br.readLine()) != null) {
@@ -125,7 +125,7 @@ public class ShadowDimension extends AbstractGame {
             File file = new File(csv);
             FileReader fr = new FileReader(file);
             BufferedReader br = new BufferedReader(fr);
-            String line = "";
+            String line;
             String[] values;
             Point topLeft = null;
             Point bottomRight = null;
@@ -174,23 +174,12 @@ public class ShadowDimension extends AbstractGame {
      * Stationary objects are objects that do not move. For example
      * walls and sinkholes are stationary objects. A player is NOT
      * a stationary object.
-     * 
      * In this function we assume that the first object in the array
      * is a player.
      * @return Array of stationary objects.
      */
     public GameObject[] getStationaryGameObjects() {
-        // get all objects other than the first object
-        GameObject[] stationaryObjects = Arrays.copyOfRange(objects, 1, objects.length);
-        return stationaryObjects;
-    }
-
-    /**
-     * Getter function for the stationary object attribute.
-     * @return Array of stationary objects.
-     */
-    public GameObject[] getStationaryObjects() {
-        return stationaryObjects;
+        return Arrays.copyOfRange(objects, 1, objects.length);
     }
 
     /**
@@ -281,9 +270,8 @@ public class ShadowDimension extends AbstractGame {
     private void startStage() {
         Point gameTitlePos = new Point(GAME_TITLE_X, GAME_TITLE_Y);
         Point gameInstructionPos = new Point(GAME_TITLE_X + 90, GAME_TITLE_Y + 190);
-        String gameTitleMsg = GAME_TITLE;
         String gameInstructionMsg = "PRESS SPACE TO START\nUSE ARROW KEYS TO FIND GATE";
-        Message gameTitle = new Message(FONT75, gameTitleMsg, gameTitlePos);
+        Message gameTitle = new Message(FONT75, GAME_TITLE, gameTitlePos);
         Message gameInstruction = new Message(FONT40, gameInstructionMsg, gameInstructionPos);
         gameTitle.draw();
         gameInstruction.draw();

@@ -3,9 +3,9 @@ import bagel.util.*;
 
 public class Message {
 
-    private Point position;
-    private String text;
-    private Font font;
+    private final Point position;
+    private final String text;
+    private final Font font;
 
     /**
      * Constructor for Message class.
