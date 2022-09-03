@@ -103,8 +103,8 @@ public class ShadowDimension extends AbstractGame {
                         Sinkhole sinkhole = new Sinkhole(SINKHOLE_PATH, pos);
                         objects[i] = sinkhole;
                     }
+                    i++;
                 }
-                i++;
             }
             
             // reduce size of array
@@ -164,7 +164,7 @@ public class ShadowDimension extends AbstractGame {
     }
 
     public GameObject[] getStationaryGameObjects() {
-        // remove the first element of the game objects array
+        // get all objects other than the first object
         GameObject[] stationaryObjects = Arrays.copyOfRange(objects, 1, objects.length);
         return stationaryObjects;
     }
@@ -200,7 +200,7 @@ public class ShadowDimension extends AbstractGame {
             
             // assume player is the first object in the array
             Player player = (Player) objects[0];
-            player.update(input);
+            player.update(input, stationaryObjects);
 
             if (player.isAtGate()) {
                 stage = GAME_WIN_SCREEN;

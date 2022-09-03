@@ -23,7 +23,7 @@ public class Player extends GameObject {
         this.imageRight = new Image(imageRight);
     }
 
-    public void move(Point position) {
+    public void move(Point position, GameObject[] stationaryObjects) {
         Point oldPos = getPosition();
         if (position.x > oldPos.x) {
             setImage(imageRight);
@@ -31,55 +31,58 @@ public class Player extends GameObject {
             setImage(imageLeft);
         }
         setPosition(position);
+        if (this.collides(stationaryObjects)) {
+            setPosition(oldPos);
+        }
     }
 
-    public void update(Input input) {
+    public void update(Input input, GameObject[] stationaryObjects) {
         if (input.isDown(Keys.LEFT)) {
-            this.moveLeft();
+            this.moveLeft(stationaryObjects);
         }
 
         if (input.isDown(Keys.RIGHT)) {
-            this.moveRight();
+            this.moveRight(stationaryObjects);
         }
 
         if (input.isDown(Keys.UP)) {
-            this.moveUp();
+            this.moveUp(stationaryObjects);
         }
 
         if (input.isDown(Keys.DOWN)) {
-            this.moveDown();
+            this.moveDown(stationaryObjects);
         }
     }
 
-    public void moveLeft() {
+    public void moveLeft(GameObject[] stationaryObjects) {
         Point oldPos = getPosition();
         Point newPos = new Point(oldPos.x - SPEED, oldPos.y);
         if (boundary.contains(newPos)) {
-            this.move(newPos);
+            this.move(newPos, stationaryObjects);
         }
     }
 
-    public void moveRight() {
+    public void moveRight(GameObject[] stationaryObjects) {
         Point oldPos = getPosition();
         Point newPos = new Point(oldPos.x + SPEED, oldPos.y);
         if (boundary.contains(newPos)) {
-            this.move(newPos);
+            this.move(newPos, stationaryObjects);
         }
     }
 
-    public void moveUp() {
+    public void moveUp(GameObject[] stationaryObjects) {
         Point oldPos = getPosition();
         Point newPos = new Point(oldPos.x, oldPos.y - SPEED);
         if (boundary.contains(newPos)) {
-            this.move(newPos);
+            this.move(newPos, stationaryObjects);
         }
     }
 
-    public void moveDown() {
+    public void moveDown(GameObject[] stationaryObjects) {
         Point oldPos = getPosition();
         Point newPos = new Point(oldPos.x, oldPos.y + SPEED);
         if (boundary.contains(newPos)) {
-            this.move(newPos);
+            this.move(newPos, stationaryObjects);
         }
     }
 
@@ -97,8 +100,8 @@ public class Player extends GameObject {
     }
 
     public boolean collides(GameObject[] stationaryObjects) {
+        Rectangle playerRectangle = this.getRectangle();
         for (GameObject object : stationaryObjects) {
-            Rectangle playerRectangle = this.getRectangle();
             Rectangle objectRectangle = object.getRectangle();
             if (playerRectangle.intersects(objectRectangle)) {
                 return true;

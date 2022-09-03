@@ -4,24 +4,22 @@ import bagel.util.*;
 public abstract class GameObject {
     
     private Image image;
-    private Point position;
     protected static Boundary boundary;
-    private Rectangle rectangle;
+    protected Rectangle rectangle;
 
     public GameObject(String image, Point position) {
         this.image = new Image(image);
-        this.position = position;
         this.rectangle = deriveRectangle(position, this.image);
     }
 
     public GameObject(String image, Point position, Boundary boundary) {
         this.image = new Image(image);
-        this.position = position;
         this.rectangle = deriveRectangle(position, this.image);
         GameObject.boundary = boundary;
     }
 
     public void draw() {
+        Point position = getPosition();
         if (boundary.contains(position)) {
             image.drawFromTopLeft(position.x, position.y);
         } else {
@@ -30,11 +28,11 @@ public abstract class GameObject {
     }
 
     public Point getPosition() {
-        return position;
+        return rectangle.topLeft();
     }
 
     public void setPosition(Point position) {
-        this.position = position;
+        rectangle.moveTo(position);
     }
 
     public Image getImage() {
@@ -51,14 +49,6 @@ public abstract class GameObject {
 
     public void setRectangle(Rectangle rectangle) {
         this.rectangle = rectangle;
-    }
-
-    public static Boundary getBoundary() {
-        return boundary;
-    }
-
-    public static void setBoundary(Boundary boundary) {
-        GameObject.boundary = boundary;
     }
 
     private Rectangle deriveRectangle(Point position, Image image) {
