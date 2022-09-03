@@ -32,22 +32,6 @@ public class Player extends GameObject {
     }
 
     /**
-     * Move the player to the specified position.
-     * @param position Position to move the player to.
-     */
-    public void move(Point position) {
-        prevPos = getPosition();
-
-        if (position.x > prevPos.x) {
-            setImage(imageRight);
-        } else if (position.x < prevPos.x) {
-            setImage(imageLeft);
-        }
-
-        setPosition(position);
-    }
-
-    /**
      * Update the player's position given inputs.
      * @param input Input object to get inputs from.
      */
@@ -61,6 +45,22 @@ public class Player extends GameObject {
         } else if (input.isDown(Keys.DOWN)) {
             this.moveDown();
         }
+    }
+    
+    /**
+     * Move the player to the specified position.
+     * @param position Position to move the player to.
+     */
+    public void move(Point position) {
+        prevPos = getPosition();
+
+        if (position.x > prevPos.x) {
+            setImage(imageRight);
+        } else if (position.x < prevPos.x) {
+            setImage(imageLeft);
+        }
+
+        setPosition(position);
     }
 
     /** 

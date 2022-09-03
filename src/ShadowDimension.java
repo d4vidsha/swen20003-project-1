@@ -61,20 +61,6 @@ public class ShadowDimension extends AbstractGame {
     }
 
     /**
-     * Checks if a string is in an array of strings.
-     * @param arr Array of strings.
-     * @param targetValue String to check if it is in the array.
-     * @return True if the string is in the array, false otherwise.
-     */
-    private static boolean contains(String[] arr, String targetValue) {
-        for(String s: arr){
-            if(s.equals(targetValue))
-                return true;
-        }
-        return false;
-    }
-
-    /**
      * Read the objects from the csv file.
      * @param csv Name of the csv file.
      * @param boundary Boundary of the game which will be added to GameObjects.
@@ -170,6 +156,20 @@ public class ShadowDimension extends AbstractGame {
     }
 
     /**
+     * Checks if a string is in an array of strings.
+     * @param arr Array of strings.
+     * @param targetValue String to check if it is in the array.
+     * @return True if the string is in the array, false otherwise.
+     */
+    private static boolean contains(String[] arr, String targetValue) {
+        for(String s: arr){
+            if(s.equals(targetValue))
+                return true;
+        }
+        return false;
+    }
+
+    /**
      * Get the stationary objects from the array of all objects.
      * Stationary objects are objects that do not move. For example
      * walls and sinkholes are stationary objects. A player is NOT
@@ -183,54 +183,6 @@ public class ShadowDimension extends AbstractGame {
         // get all objects other than the first object
         GameObject[] stationaryObjects = Arrays.copyOfRange(objects, 1, objects.length);
         return stationaryObjects;
-    }
-
-    /**
-     * Start screen for the game.
-     */
-    private void startStage() {
-        Point gameTitlePos = new Point(GAME_TITLE_X, GAME_TITLE_Y);
-        Point gameInstructionPos = new Point(GAME_TITLE_X + 90, GAME_TITLE_Y + 190);
-        String gameTitleMsg = GAME_TITLE;
-        String gameInstructionMsg = "PRESS SPACE TO START\nUSE ARROW KEYS TO FIND GATE";
-        Message gameTitle = new Message(FONT75, gameTitleMsg, gameTitlePos);
-        Message gameInstruction = new Message(FONT40, gameInstructionMsg, gameInstructionPos);
-        gameTitle.draw();
-        gameInstruction.draw();
-    }
-
-    /**
-     * Game screen for the game, where the player can move around and either
-     * win or lose.
-     * @param input Input from the user which controls the player.
-     * @param player Player object that is moved.
-     */
-    private void gameStage(Input input, Player player) {
-        drawBackground();
-        drawHealthBar(player);
-        player.draw();
-        drawObjects(stationaryObjects);
-        player.update(input);
-
-        if (player.isAtGate()) {
-            stage = GAME_WIN_SCREEN;
-        }
-    }
-
-    /**
-     * Game over screen for the game, where the player has lost.
-     */
-    private void gameOverStage() {
-        Message lose = new Message(FONT75, "GAME OVER!");
-        lose.draw();
-    }
-
-    /**
-     * Game win screen for the game, where the player has won.
-     */
-    private void gameWinStage() {
-        Message win = new Message(FONT75, "CONGRATULATIONS!");
-        win.draw();
     }
 
     /**
@@ -321,6 +273,54 @@ public class ShadowDimension extends AbstractGame {
         ArrayList<GameObject> objectsList = new ArrayList<>(Arrays.asList(objects));
         objectsList.remove(gameObject);
         return objectsList.toArray(new GameObject[objectsList.size()]);
+    }
+
+    /**
+     * Start screen for the game.
+     */
+    private void startStage() {
+        Point gameTitlePos = new Point(GAME_TITLE_X, GAME_TITLE_Y);
+        Point gameInstructionPos = new Point(GAME_TITLE_X + 90, GAME_TITLE_Y + 190);
+        String gameTitleMsg = GAME_TITLE;
+        String gameInstructionMsg = "PRESS SPACE TO START\nUSE ARROW KEYS TO FIND GATE";
+        Message gameTitle = new Message(FONT75, gameTitleMsg, gameTitlePos);
+        Message gameInstruction = new Message(FONT40, gameInstructionMsg, gameInstructionPos);
+        gameTitle.draw();
+        gameInstruction.draw();
+    }
+
+    /**
+     * Game screen for the game, where the player can move around and either
+     * win or lose.
+     * @param input Input from the user which controls the player.
+     * @param player Player object that is moved.
+     */
+    private void gameStage(Input input, Player player) {
+        drawBackground();
+        drawHealthBar(player);
+        player.draw();
+        drawObjects(stationaryObjects);
+        player.update(input);
+
+        if (player.isAtGate()) {
+            stage = GAME_WIN_SCREEN;
+        }
+    }
+
+    /**
+     * Game over screen for the game, where the player has lost.
+     */
+    private void gameOverStage() {
+        Message lose = new Message(FONT75, "GAME OVER!");
+        lose.draw();
+    }
+
+    /**
+     * Game win screen for the game, where the player has won.
+     */
+    private void gameWinStage() {
+        Message win = new Message(FONT75, "CONGRATULATIONS!");
+        win.draw();
     }
 
     /**
