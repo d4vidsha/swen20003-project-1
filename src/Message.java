@@ -27,4 +27,8 @@ public class Message {
     public void draw() {
         font.drawString(text, position.x, position.y);
     }
+
+    public void draw(DrawOptions options) {
+        font.drawString(text, position.x, position.y, options);
+    }
 }

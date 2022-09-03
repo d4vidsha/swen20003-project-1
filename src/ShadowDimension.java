@@ -37,6 +37,10 @@ public class ShadowDimension extends AbstractGame {
     private static final int GAME_OVER_SCREEN = 2;
     private static final int GAME_WIN_SCREEN = 3;
 
+    private static final Colour GREEN = new Colour(0, 0.8, 0.2);
+    private static final Colour ORANGE = new Colour(0.9, 0.6, 0);
+    private static final Colour RED = new Colour(1, 0, 0);
+
     private int stage = START_SCREEN;
 
     private static String[] OBJECT_NAMES = {"Player", "Wall", "Sinkhole"};
@@ -175,6 +179,9 @@ public class ShadowDimension extends AbstractGame {
      */
     @Override
     protected void update(Input input) {
+        // assume player is the first object in the array
+        Player player = (Player) objects[0];
+
 
         if (input.wasPressed(Keys.ESCAPE)) {
             Window.close();
@@ -183,14 +190,15 @@ public class ShadowDimension extends AbstractGame {
         if (input.wasPressed(Keys.SPACE) && stage == START_SCREEN) {
             stage = GAME_SCREEN;
         }
-        
+
         if (stage == START_SCREEN) {
             gameTitle.draw();
             gameInstruction.draw();
             return;
         } else if (stage == GAME_SCREEN) {
-
             BACKGROUND_IMAGE.draw(Window.getWidth()/2.0, Window.getHeight()/2.0);
+
+            drawHealthBar(player);
         
             for (GameObject object : objects) {
                 if (object != null) {
@@ -198,8 +206,6 @@ public class ShadowDimension extends AbstractGame {
                 }
             }
             
-            // assume player is the first object in the array
-            Player player = (Player) objects[0];
             player.update(input, stationaryObjects);
 
             if (player.isAtGate()) {
@@ -218,5 +224,24 @@ public class ShadowDimension extends AbstractGame {
 
     public GameObject[] getStationaryObjects() {
         return stationaryObjects;
+    }
+
+    private void drawHealthBar(Player player) {
+        int health = player.getHealthPercentage();
+        Font font30 = new Font(FONT_PATH, 30);
+        Message healthBar = new Message(font30, player.getHealthPercentage() + "%", new Point(20, 25));
+        DrawOptions drawOptions = new DrawOptions();
+
+        if (65 <= health && health <= 100) {
+            drawOptions.setBlendColour(GREEN);
+        } else if (35 <= health && health < 65) {
+            drawOptions.setBlendColour(ORANGE);
+        } else if (0 <= health && health < 35) {
+            drawOptions.setBlendColour(RED);
+        } else {
+            System.out.println("Health percentage out of range");
+            System.exit(1);
+        }
+        healthBar.draw(drawOptions);
     }
 }

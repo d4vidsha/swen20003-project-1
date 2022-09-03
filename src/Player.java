@@ -3,13 +3,15 @@ import bagel.util.*;
 
 public class Player extends GameObject {
 
+    private static final int MAX_HEALTH = 20;
+
     private static final int SPEED = 2;
     private static final double WIN_X = 950;
     private static final double WIN_Y = 670;
 
     private Image imageLeft;
     private Image imageRight;
-    private int health = 100;
+    private int health = MAX_HEALTH;
 
     public Player(String imageLeft, String imageRight, Point position) {
         super(imageLeft, position);
@@ -39,17 +41,11 @@ public class Player extends GameObject {
     public void update(Input input, GameObject[] stationaryObjects) {
         if (input.isDown(Keys.LEFT)) {
             this.moveLeft(stationaryObjects);
-        }
-
-        if (input.isDown(Keys.RIGHT)) {
+        } else if (input.isDown(Keys.RIGHT)) {
             this.moveRight(stationaryObjects);
-        }
-
-        if (input.isDown(Keys.UP)) {
+        } else if (input.isDown(Keys.UP)) {
             this.moveUp(stationaryObjects);
-        }
-
-        if (input.isDown(Keys.DOWN)) {
+        } else if (input.isDown(Keys.DOWN)) {
             this.moveDown(stationaryObjects);
         }
     }
@@ -97,6 +93,10 @@ public class Player extends GameObject {
 
     public void setHealth(int health) {
         this.health = health;
+    }
+
+    public int getHealthPercentage() {
+        return (int) Math.round((double) health / MAX_HEALTH * 100);
     }
 
     public boolean collides(GameObject[] stationaryObjects) {
