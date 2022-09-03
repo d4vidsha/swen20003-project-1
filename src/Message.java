@@ -1,4 +1,5 @@
 import bagel.*;
+import bagel.util.*;
 
 public class Message {    
     private Point position;
@@ -24,6 +25,6 @@ public class Message {
     }
     
     public void draw() {
-        font.drawString(text, position.getX(), position.getY());
+        font.drawString(text, position.x, position.y);
     }
 }
