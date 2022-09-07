@@ -15,6 +15,7 @@ public class ShadowDimension extends AbstractGame {
     private static final int WINDOW_HEIGHT = 768;
     private static final int MAX_OBJECTS = 60;
     private static final String CSV_DELIMITER = ",";
+    private static final String CSV_PATH = "res/level0.csv";
 
     // fonts
     private static final String FONT_PATH = "res/frostbite.ttf";
@@ -22,7 +23,7 @@ public class ShadowDimension extends AbstractGame {
     private final Font FONT40 = new Font(FONT_PATH, 40);
     private final Font FONT30 = new Font(FONT_PATH, 30);
 
-    // game title location
+    // game title
     private static final double GAME_TITLE_X = 260;
     private static final double GAME_TITLE_Y = 250;
     private static final String GAME_TITLE = "Shadow Dimension";
@@ -43,8 +44,8 @@ public class ShadowDimension extends AbstractGame {
 
     // initialising the game
     private int stage = START_SCREEN;
-    private final Boundary boundary = readBoundary("res/level0.csv");
-    private final GameObject[] objects = readObjects("res/level0.csv", boundary);
+    private final Boundary boundary = readBoundary(CSV_PATH);
+    private final GameObject[] objects = readObjects(CSV_PATH, boundary);
     private GameObject[] stationaryObjects = getStationaryGameObjects();
     private GameObject[] sinkholes = getSinkholes(stationaryObjects);
     private final GameObject[] walls = getWalls(stationaryObjects);
