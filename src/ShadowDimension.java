@@ -140,10 +140,13 @@ public class ShadowDimension extends AbstractGame {
                 values = line.split(CSV_DELIMITER);
                 double x = Double.parseDouble(values[1]);
                 double y = Double.parseDouble(values[2]);
-                if (values[0].equals("TopLeft")) {
-                    topLeft = new Point(x, y);
-                } else if (values[0].equals("BottomRight")) {
-                    bottomRight = new Point(x, y);
+                switch (values[0]) {
+                    case "TopLeft":
+                        topLeft = new Point(x, y);
+                        break;
+                    case "BottomRight":
+                        bottomRight = new Point(x, y);
+                        break;
                 }
             }
             
@@ -347,7 +350,7 @@ public class ShadowDimension extends AbstractGame {
 
         // check if player hit a wall or sinkhole
         if (player.collides(sinkholes)) {
-            // get specific sinkhole collided with
+            // get specific sinkhole collided with and inflict damage
             Sinkhole sinkhole = (Sinkhole) player.getCollidedObject(sinkholes);
             int damagePoints = sinkhole.getDamagePoints();
             player.inflictDamage(damagePoints);
