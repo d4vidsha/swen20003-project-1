@@ -23,7 +23,7 @@ public class Player extends GameObject {
      * @param position Position of the player.
      */
     public Player(String imageLeft, String imageRight, Point position) {
-        super(imageLeft, position);
+        super(imageRight, position);
         this.imageLeft = new Image(imageLeft);
         this.imageRight = new Image(imageRight);
         this.health = MAX_HEALTH;
